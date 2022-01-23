@@ -8,6 +8,10 @@ CRGB leds[NUM_LEDS];
 
 int const micPin = A0;
 
+int sensorValue = 0;
+int highestSensorValue = -1000; //setting the highestSensorValue to an extreme low
+int lowestSensorValue = 1000;  //setting the lowestSensorValue to an extreme high
+
 
 
 
@@ -19,6 +23,14 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  sensorValue = analogRead(micPin);
+
+  if (sensorValue > high) {
+      high = sensorValue;
+    }
+    
+  if (sensorValue < low) {
+      low = sensorValue;
+    } 
 
 }
