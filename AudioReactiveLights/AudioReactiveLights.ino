@@ -8,6 +8,7 @@ CRGB leds[NUM_LEDS];
 
 int const micPin = A0;
 
+int hueColours[] = {0, 130, 230, 275, 300}; //hue values for colour pallete
 int sensorValue = 0;
 int highestSensorValue = -1000; //setting the highestSensorValue to an extreme low
 int lowestSensorValue = 1000;  //setting the lowestSensorValue to an extreme high
@@ -65,6 +66,7 @@ void loop() {
          leds[47] = CHSV(index, 255, 255);
          leds[46] = CHSV(index, 255, 255);
       }
+      FastLED.show();
      }
   
   EVERY_N_SECONDS(5) {
