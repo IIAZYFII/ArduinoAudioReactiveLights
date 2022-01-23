@@ -4,11 +4,14 @@
 #define LED_PIN 2
 #define updateLEDS 3 //The amount of LEDS to update and move every loop
 
-CRGB leds[NUM_LEDS]; 
+void gridForm(int upper, int lower, int interval);
 
 int const micPin = A0;
 
+CRGB leds[NUM_LEDS]; 
 int hueColours[] = {0, 130, 230, 275, 300}; //hue values for colour pallete
+int grid[6]; //Sections that the frequencies fall in
+
 int sensorValue = 0;
 int highestSensorValue = -1000; //setting the highestSensorValue to an extreme low
 int lowestSensorValue = 1000;  //setting the lowestSensorValue to an extreme high
@@ -53,8 +56,20 @@ void loop() {
         }
      FastLED.show();
     }
+
+    gridForm(highestSensorValue, lowestSensorValue, 6); //splits the frequencies into 6 sections
+    int index = 0;
+
+    //Selects the colour/hue depending on the sections that the sensorValue falls in
+    for(int i = 0; i < 6; i++) {
+        if(sensorValue > grid[i] && sensorValue <= grid[i + 1]) {
+            index = hueColours[i];
+          }
+      
+      
+      }
  
-  lastSensorValue = sensorValue;
+  
   
      EVERY_N_MILLISECONDS(50) { //Turns on 6 leds from the middle if below or above specific frequency
       if (sensorValue > (averageSensorValue + 5) || sensorValue < (averageSensorValue - 5)) {
@@ -68,13 +83,24 @@ void loop() {
       }
       FastLED.show();
      }
-  
-  EVERY_N_SECONDS(5) {
-      highestSenosrValue = (highestSensorValue + averageSensorValue ) / 2; //dynamically changes and rests highestSensorValue
-      lowestSensorValue = (lowestSensorValue + averageSensorValue ) / 2;  //dynamically changes and rests lowestSensorValue
-    }    
 
      
-   
+  
+  EVERY_N_SECONDS(5) {
+      highestSensorValue = (highestSensorValue + averageSensorValue ) / 2; //dynamically changes and rests highestSensorValue
+      lowestSensorValue = (lowestSensorValue + averageSensorValue ) / 2;  //dynamically changes and rests lowestSensorValue
+    } 
 
+
+
+    lastSensorValue = sensorValue;
 }
+
+//splits the frequencies into different catergories/bands
+void gridForm(int upper, int lower, int interval) {
+    int stepSize = (upper-lower) / (interval - 1); 
+    for(int i = 0; i < interval; i++) {
+        grid[i] = lower + (i * stepSize);
+      }
+  
+  }
