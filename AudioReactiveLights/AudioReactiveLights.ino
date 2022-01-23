@@ -7,6 +7,7 @@
 void gridForm(int upper, int lower, int interval);
 
 int const micPin = A0;
+int const potPin = A1;
 
 CRGB leds[NUM_LEDS]; 
 int hueColours[] = {0, 130, 230, 275, 300}; //hue values for colour pallete
@@ -17,6 +18,7 @@ int highestSensorValue = -1000; //setting the highestSensorValue to an extreme l
 int lowestSensorValue = 1000;  //setting the lowestSensorValue to an extreme high
 int averageSensorValue = 0;
 int lastSensorValue;
+int potValue = 0;
 
 
 
@@ -30,6 +32,7 @@ void setup() {
 
 void loop() {
   sensorValue = analogRead(micPin);
+  potValue = analogRead(potPin);
 
   if (sensorValue > highestSensorValue) {
       highestSensorValue = sensorValue;
@@ -40,6 +43,7 @@ void loop() {
     } 
   averageSensorValue = (sensorValue + lastSensorValue) / 2;
 
+    
   EVERY_N_MILLISECONDS(50) {
       for(int i = NUM_LEDS -1; i >= updateLEDS; i--) {
           if(i == 50 || i == 51) {
@@ -70,9 +74,9 @@ void loop() {
       }
  
   
-  
+     int envelopeBoundary = map(potValue, 0, 1023, 0, 20);
      EVERY_N_MILLISECONDS(50) { //Turns on 6 leds from the middle if below or above specific frequency
-      if (sensorValue > (averageSensorValue + 5) || sensorValue < (averageSensorValue - 5)) {
+      if (sensorValue > (averageSensorValue + envelopeBoundary) || sensorValue < (averageSensorValue - envelopeBoundary)) {
          leds[50] =  CHSV(index, 255, 255);
          leds[51] = CHSV(index, 255, 255);
          leds[52] = CHSV(index, 255, 255);
