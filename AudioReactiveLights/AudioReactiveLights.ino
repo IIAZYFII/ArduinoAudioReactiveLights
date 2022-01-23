@@ -11,6 +11,8 @@ int const micPin = A0;
 int sensorValue = 0;
 int highestSensorValue = -1000; //setting the highestSensorValue to an extreme low
 int lowestSensorValue = 1000;  //setting the lowestSensorValue to an extreme high
+int averageSensorValue = 0;
+int lastSensorValue;
 
 
 
@@ -32,5 +34,12 @@ void loop() {
   if (sensorValue < low) {
       low = sensorValue;
     } 
+
+  averageSensorValue = (sensorValue + lastSensorValue) / 2;
+
+
+
+  lastSensorValue = sensorValue;
+   
 
 }
