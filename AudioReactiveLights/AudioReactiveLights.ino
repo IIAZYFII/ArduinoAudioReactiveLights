@@ -46,10 +46,15 @@ void loop() {
             }
         
         }
-    
-    
+      for(int i = 0; i <= NUM_LEDS - updateLEDSl i++) {
+          if(i < 49) {
+              leds[i] = leds[i + updateLEDS];
+            }
+        
+        }
+     FastLED.show();
     }
-  FastLED.show();
+ 
 
 
 
