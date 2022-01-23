@@ -27,19 +27,52 @@ void setup() {
 void loop() {
   sensorValue = analogRead(micPin);
 
-  if (sensorValue > high) {
-      high = sensorValue;
+  if (sensorValue > highestSensorValue) {
+      highestSensorValue = sensorValue;
     }
     
-  if (sensorValue < low) {
-      low = sensorValue;
+  if (sensorValue < lowestSensorValue) {
+      lowestSensorValue = sensorValue;
     } 
 
   averageSensorValue = (sensorValue + lastSensorValue) / 2;
 
+  EVERY_N_MILLISECONDS(50) {
+      for(int i = NUM_LEDS -1; i >= updateLEDS; i--) {
+          if(i == 50 || i == 51) {
+              leds[i] = CRGB::Black; //Turns the led off
+            } else if (i > 49) {
+              leds[i] = leds[i - updateLEDS]; // moves the leds along the strip from the middle in one direction
+            }
+        
+        }
+    
+    
+    }
+  FastLED.show();
+
 
 
   lastSensorValue = sensorValue;
+
+
+     EVERY_N_MILLISECONDS(50) { //Turns on 6 leds from the middle if below or above specific frequency
+      if (sensorValue > (averageSensorValue + 5) || sensorValue < (averageSensorValue - 5)) {
+         leds[50] =  CHSV(index, 255, 255);
+         leds[51] = CHSV(index, 255, 255);
+         leds[52] = CHSV(index, 255, 255);
+
+         leds[48] =  CHSV(index, 255, 255);
+         leds[47] = CHSV(index, 255, 255);
+         leds[46] = CHSV(index, 255, 255);
+    
+        
+      }
+      
+     }
+      
+
+     
    
 
 }
