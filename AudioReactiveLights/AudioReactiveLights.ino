@@ -34,7 +34,6 @@ void loop() {
   if (sensorValue < lowestSensorValue) {
       lowestSensorValue = sensorValue;
     } 
-
   averageSensorValue = (sensorValue + lastSensorValue) / 2;
 
   EVERY_N_MILLISECONDS(50) {
@@ -46,36 +45,32 @@ void loop() {
             }
         
         }
-      for(int i = 0; i <= NUM_LEDS - updateLEDSl i++) {
+      for(int i = 0; i <= NUM_LEDS - updateLEDS; i++) {
           if(i < 49) {
               leds[i] = leds[i + updateLEDS];
-            }
-        
+          }
         }
      FastLED.show();
     }
  
-
-
-
   lastSensorValue = sensorValue;
-
-
+  
      EVERY_N_MILLISECONDS(50) { //Turns on 6 leds from the middle if below or above specific frequency
       if (sensorValue > (averageSensorValue + 5) || sensorValue < (averageSensorValue - 5)) {
          leds[50] =  CHSV(index, 255, 255);
          leds[51] = CHSV(index, 255, 255);
          leds[52] = CHSV(index, 255, 255);
-
+         
          leds[48] =  CHSV(index, 255, 255);
          leds[47] = CHSV(index, 255, 255);
          leds[46] = CHSV(index, 255, 255);
-    
-        
       }
-      
      }
-      
+  
+  EVERY_N_SECONDS(5) {
+      highestSenosrValue = (highestSensorValue + averageSensorValue ) / 2; //dynamically changes and rests highestSensorValue
+      lowestSensorValue = (lowestSensorValue + averageSensorValue ) / 2;  //dynamically changes and rests lowestSensorValue
+    }    
 
      
    
